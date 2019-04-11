@@ -82,7 +82,7 @@ class bugerBuilder extends Component {
                 <Burger ingredients={ this.state.ingredients}
                 />
                 <Modal order={this.state.ingredients} show={this.state.purchaseOrder} 
-                clickedShow={this.backDrop} confirmCheckout ={this.confirmCheckout}/>
+                clickedShow={this.backDrop} confirmCheckout ={this.confirmCheckout} price={this.state.price}/>
                 <BuildControl 
                 added={this.addIngredient}
                 remove={this.removeIngredient}
