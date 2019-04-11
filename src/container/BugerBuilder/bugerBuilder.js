@@ -3,7 +3,7 @@ import Aux from '../../hoc/aux'
 import Burger from '../../components/burger/burger'
 import BuildControl from '../../components/burger/Biultcontrols/Builtcontrols'
 import Modal from '../../UI/modal/modal'
-// import BackDrop from '../../UI/backdrop/backdrop'
+// import BackDrop from '../../UI/ backdrop/backdrop'
 const INGREDIENT_PRICE = {
     meat : 2.00,
     cheese: 1.50,
@@ -77,7 +77,8 @@ class bugerBuilder extends Component {
             <Aux>
                 <Burger ingredients={ this.state.ingredients}
                 />
-                <Modal order={this.state.ingredients} show={this.state.purchaseOrder} clickedShow={this.backDrop}/>
+                <Modal order={this.state.ingredients} show={this.state.purchaseOrder} 
+                clickedShow={this.backDrop}/>
                 <BuildControl 
                 added={this.addIngredient}
                 remove={this.removeIngredient}
