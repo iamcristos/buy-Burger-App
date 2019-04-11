@@ -1,0 +1,18 @@
+.Builtcontrols{
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin: auto;
+    padding: 10px 0;
+    box-shadow: 0 2px 3px orange;
+    background-color: orange
+}
+
+.ButtonOders{
+    width: 20%;
+    background-color: brown;
+    border-radius: 2px;
+    padding: 10px;
+    margin: 10px auto
+}
