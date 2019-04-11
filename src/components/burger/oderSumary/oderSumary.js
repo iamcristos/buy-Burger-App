@@ -15,6 +15,7 @@ const order = (props)=>{
             <ul>
                 {ingredientList}
             </ul>
+            <p><strong>Price Is: ${props.price.toFixed(2)}</strong></p>
             <p>Would you love to continue?</p>
             <Button btnType='Danger' clicked={props.clickedShow}>CANCEL</Button>
             <Button btnType='Success' clicked={props.confirm}>CONTINUE</Button>

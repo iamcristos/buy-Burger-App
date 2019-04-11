@@ -11,7 +11,7 @@ const modal = (props)=>(
                 opacity: props.show ? '1' : '0'
                 }}>
                 <OrderSumary order={props.order} clickedShow={props.clickedShow}
-                confirm={props.confirmCheckout}/>
+                confirm={props.confirmCheckout} price={props.price}/>
         </div>
     </Aux>
 )
