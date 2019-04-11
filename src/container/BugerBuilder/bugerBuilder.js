@@ -41,6 +41,10 @@ class bugerBuilder extends Component {
         this.setState({purchaseOrder:false})
     }
 
+    confirmCheckout = ()=>{
+        alert('You confirmed your Order')
+    }
+
     addIngredient = (type)=>{
         const selectedIngredient = this.state.ingredients[type]
         const update = selectedIngredient + 1 
@@ -78,7 +82,7 @@ class bugerBuilder extends Component {
                 <Burger ingredients={ this.state.ingredients}
                 />
                 <Modal order={this.state.ingredients} show={this.state.purchaseOrder} 
-                clickedShow={this.backDrop}/>
+                clickedShow={this.backDrop} confirmCheckout ={this.confirmCheckout}/>
                 <BuildControl 
                 added={this.addIngredient}
                 remove={this.removeIngredient}
