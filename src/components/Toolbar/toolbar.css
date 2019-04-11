@@ -1,0 +1,15 @@
+.Toolbar {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: rgba(brown, brown, brown, 0.5); */
+    background-color: brown;
+    height: 56px;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    position: fixed;
+    top:0;
+    left: 0%;
+    padding: 20px;
+    z-index: 90;
+}
