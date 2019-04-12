@@ -1,7 +1,15 @@
 import React from 'react'
 import Aux from '../../../hoc/aux'
 import Button from '../../../UI/button/button'
+
+/**
+ * 
+ * 
+ * @param {any} props 
+ * @returns properties
+ */
 const order = (props)=>{
+
     const ingredient = {...props.order}
     const ingredientList = Object.keys(ingredient).map(item=> {
         return (

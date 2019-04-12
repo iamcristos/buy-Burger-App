@@ -4,12 +4,20 @@ import Burger from '../../components/burger/burger'
 import BuildControl from '../../components/burger/Biultcontrols/Builtcontrols'
 import Modal from '../../UI/modal/modal'
 // import BackDrop from '../../UI/ backdrop/backdrop'
+
 const INGREDIENT_PRICE = {
     meat : 2.00,
     cheese: 1.50,
     salad: 0.5,
     bacon: 1.00
 }
+
+/**
+ * @returns methods
+ * 
+ * @class bugerBuilder
+ * @extends {Component}
+ */
 class bugerBuilder extends Component {
     state = {
         ingredients : {
@@ -57,6 +65,7 @@ class bugerBuilder extends Component {
         this.purchaseBurger()
     }
 
+    
     removeIngredient = (type)=>{
         const selectedIngredient = this.state.ingredients[type]
         const update = selectedIngredient - 1
