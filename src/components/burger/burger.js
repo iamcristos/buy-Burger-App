@@ -2,6 +2,7 @@ import React from 'react'
 import BurgerIngredient from '../burger/burgerIngredient/burgerIngredient'
 import classes from './burger.css'
 const burger = (props)=>{
+    // if (props.ingredients.length)
     let transformIngredient = Object.keys(props.ingredients).map((ingredient)=>{
         return [...Array(props.ingredients[ingredient])].map((_, i)=>{
             return <BurgerIngredient key={ingredient + i} type={ingredient} />

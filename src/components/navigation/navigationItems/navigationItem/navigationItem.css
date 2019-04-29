@@ -1,16 +1,14 @@
 .Navigation{
-    display: flex;
-    margin: 0;
+    display: block;
+    margin: 10px 0;
     box-sizing: border-box;
-    height:100%;
-    margin: 0
+    width:100%;
 }
 
 .Navigation a {
-    background-color: white;
+    background-color:brown;
     text-decoration: none;
-    height:100%;
-    padding: 16px 10px;
+    width:100%;
     box-sizing: border-box;
     border-bottom: 4px solid transparent;
     display: block
@@ -22,4 +20,30 @@
     border-bottom: 4px solid #40A4C8;
     background-color: lightsteelblue;
     color: white
+}
+
+@media (min-width:500px) {
+    .Navigation{
+        display: flex;
+        margin: 0;
+        height:100%;
+        width: auto;
+        text-align: center
+    }
+    
+    .Navigation a {
+        background-color: white;
+        text-decoration: none;
+        height:100%;
+        display: block
+    }
+    
+    .Navigation a:hover,
+    .Navigation a:active,
+    .Navigation a.active {
+        border-bottom: 4px solid #40A4C8;
+        background-color: lightsteelblue;
+        color: white
+    }
+    
 }
