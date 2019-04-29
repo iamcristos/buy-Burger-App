@@ -4,6 +4,11 @@ import Burger from '../../components/burger/burger'
 import BuildControl from '../../components/burger/Biultcontrols/Builtcontrols'
 import Modal from '../../UI/modal/modal'
 // import BackDrop from '../../UI/ backdrop/backdrop'
+// import axios instance
+import axios from '../../axios'
+import Loader from '../../UI/loaders/loader';
+import OrderSumary from '../../components/burger/oderSumary/oderSumary';
+import customError from '../../hoc/customError/customError'
 
 const INGREDIENT_PRICE = {
     meat : 2.00,
@@ -20,17 +25,28 @@ const INGREDIENT_PRICE = {
  */
 class bugerBuilder extends Component {
     state = {
-        ingredients : {
-            meat: 0,
-            cheese: 0,
-            salad: 0,
-            bacon:0
-        },
+        ingredients : null,
         price: 4.00,
         purchasable: false,
         purchaseOrder: false,
+        loading:false,
+        error: false
     }
 
+    componentDidMount() {
+        axios.get('https://buy-burger-app.firebaseio.com/ingredient.json')
+        .then(res=> {
+            return this.setState({ingredients:res.data})
+        })
+        .catch(err=> this.setState({error:true}))
+    }
+
+    /**
+     * @returns number of ingredients ordered 
+     * 
+     * 
+     * @memberOf bugerBuilder
+     */
     purchaseBurger = ()=> {
         const ingredients = {...this.state.ingredients}
         const sum = Object.keys(ingredients)
@@ -45,12 +61,42 @@ class bugerBuilder extends Component {
         this.setState({purchaseOrder:true})
     }
 
+    /**
+     * @returns backdrop
+     * 
+     * 
+     * @memberOf bugerBuilder
+     */
     backDrop = ()=>{
         this.setState({purchaseOrder:false})
     }
 
+    /**
+     * @returns http response to api
+     * 
+     * 
+     * @memberOf bugerBuilder
+     */
     confirmCheckout = ()=>{
-        alert('You confirmed your Order')
+        this.setState({loading:true})
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.price,
+            customer: {
+                name: 'Nmeregini Vincent',
+                email: 'nmereginivincent@gmail.com',
+                address: 'Lagos Nigeria'
+            },
+            delivaryMode: 'fastest'
+        }
+        axios('/buy.json', order)
+            .then(res=> {
+                this.setState({loading:false,purchaseOrder:false})
+            })
+            .catch(err=> {
+                this.setState({loading:false, purchaseOrder:false})
+            })
+        // alert('You confirmed your Order')
     }
 
     addIngredient = (type)=>{
@@ -86,19 +132,38 @@ class bugerBuilder extends Component {
             disableBtn[k] = disableBtn[k] <= 0
         }
         // console.log(disableBtn)
+        // set loading
+        let burger = this.state.error ? <p>Cannot load ingredient</p> : <Loader/>
+        let loading = null
+        if(this.state.ingredients) {
+            burger = (<Aux>
+                        <Burger ingredients={ this.state.ingredients ? this.state.ingredients : null}/>
+                        <BuildControl 
+                        added={this.addIngredient}
+                        remove={this.removeIngredient}
+                        disable={disableBtn}
+                        price={this.state.price}
+                        purchased={this.purchaseBurger()}
+                        orderSumary={this.purchaseOrder}/>
+                    </Aux>);
+                    loading = <OrderSumary order={this.state.ingredients} 
+                    clickedShow={this.backDrop}
+                    confirm={this.confirmCheckout} 
+                    price={this.state.price}/>
+        }
+        if (this.state.loading) {
+            loading = <Loader/>
+        }
         return (
             <Aux>
-                <Burger ingredients={ this.state.ingredients}
-                />
-                <Modal order={this.state.ingredients} show={this.state.purchaseOrder} 
-                clickedShow={this.backDrop} confirmCheckout ={this.confirmCheckout} price={this.state.price}/>
-                <BuildControl 
-                added={this.addIngredient}
-                remove={this.removeIngredient}
-                disable={disableBtn}
-                price={this.state.price}
-                purchased={this.purchaseBurger()}
-                orderSumary={this.purchaseOrder}/>
+                <Modal order={this.state.ingredients} 
+                show={this.state.purchaseOrder} 
+                clickedShow={this.backDrop} 
+                confirmCheckout ={this.confirmCheckout} 
+                price={this.state.price}> 
+                    {loading}
+                </Modal>
+                {burger}
                 <div>Ingredients</div>
             </Aux>
         )
@@ -106,4 +171,4 @@ class bugerBuilder extends Component {
 }
 
 
-export default bugerBuilder
+export default customError(bugerBuilder,axios);

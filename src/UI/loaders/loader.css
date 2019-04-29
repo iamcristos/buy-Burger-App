@@ -1,0 +1,28 @@
+.lds {
+    display: flex;
+    flex-direction: column;
+    /* width: 64px;
+    height: 64px; */
+    justify-content: center;
+    align-items: center
+  }
+  .lds:after {
+    content: " ";
+    display: block;
+    width: 46px;
+    height: 46px;
+    margin: 1px;
+    border-radius: 50%;
+    border: 5px solid rgb(199, 56, 56);
+    border-color: rgb(235, 90, 90) transparent rgb(238, 99, 99) transparent;
+    animation: lds 1.2s linear infinite;
+  }
+  @keyframes lds{
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
