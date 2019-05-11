@@ -34,6 +34,7 @@ class bugerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
         axios.get('https://buy-burger-app.firebaseio.com/ingredient.json')
         .then(res=> {
             return this.setState({ingredients:res.data})
@@ -78,25 +79,37 @@ class bugerBuilder extends Component {
      * @memberOf bugerBuilder
      */
     confirmCheckout = ()=>{
-        this.setState({loading:true})
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.price,
-            customer: {
-                name: 'Nmeregini Vincent',
-                email: 'nmereginivincent@gmail.com',
-                address: 'Lagos Nigeria'
-            },
-            delivaryMode: 'fastest'
-        }
-        axios('/buy.json', order)
-            .then(res=> {
-                this.setState({loading:false,purchaseOrder:false})
-            })
-            .catch(err=> {
-                this.setState({loading:false, purchaseOrder:false})
-            })
+        // this.setState({loading:true})
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.price,
+        //     customer: {
+        //         name: 'Nmeregini Vincent',
+        //         email: 'nmereginivincent@gmail.com',
+        //         address: 'Lagos Nigeria'
+        //     },
+        //     delivaryMode: 'fastest'
+        // }
+        // axios('/buy.json', order)
+        //     .then(res=> {
+        //         console.log(this.props.history)
+        //         this.setState({loading:false,purchaseOrder:false})
+        //     })
+        //     .catch(err=> {
+        //         this.setState({loading:false, purchaseOrder:false})
+        //     })
+            // console.log(this.props.history)
         // alert('You confirmed your Order')
+        const quaryparams = []
+        for (let i in this.state.ingredients) {
+            quaryparams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
+        }
+        const quaryString = quaryparams.join('&');
+        console.log(quaryString)
+        this.props.history.push({
+            pathname: '/checkout',
+            search: "?" + quaryString
+        });
     }
 
     addIngredient = (type)=>{
@@ -170,5 +183,6 @@ class bugerBuilder extends Component {
     }
 }
 
+// export default bugerBuilder;
 
 export default customError(bugerBuilder,axios);

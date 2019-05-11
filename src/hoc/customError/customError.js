@@ -7,11 +7,12 @@ const customError = (WrappedComponent, axios)=>{
         state = {error: null, clickedShow:true}
         // componentDidMount
         componentWillMount() {
+            // console.log(this.props)
             this.reqInterceptors= axios.interceptors.request.use(req=>{
                 this.setState({error:null});
                 return req
             })
-            this.resIntercepto = axios.interceptors.response.use(null,error=>this.setState({error:error}))
+            this.resIntercepto = axios.interceptors.response.use(res => res,error=>this.setState({error:error}))
         }rs
 
         componentWillUnmount() {
@@ -28,7 +29,7 @@ const customError = (WrappedComponent, axios)=>{
                     <Modal show={this.state.error} clickedShow={this.confirmedError}>
                         {this.state.error ? this.state.error.message : null}
                     </Modal>
-                    <WrappedComponent {...this.props.children}/>
+                    <WrappedComponent {...this.props}/>
                 </Aux>
             ) 
         }

@@ -4,13 +4,14 @@ import classes from './burger.css'
 const burger = (props)=>{
     // if (props.ingredients.length)
     let transformIngredient = Object.keys(props.ingredients).map((ingredient)=>{
+        // console.log(ingredient)
         return [...Array(props.ingredients[ingredient])].map((_, i)=>{
             return <BurgerIngredient key={ingredient + i} type={ingredient} />
         })
     }).reduce((arr,el)=>{
         return arr.concat(el)
     },[])
-    console.log(transformIngredient)
+    // console.log(transformIngredient)
 if (transformIngredient.length === 0) {
     transformIngredient = <p>Input your preferred ingredients</p>
 }
