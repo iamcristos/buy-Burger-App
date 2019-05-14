@@ -3,6 +3,7 @@ import Button from '../../../UI/button/button';
 import classes from './containerData.css';
 import axios from '../../../axios';
 import Spinner from '../../../UI/loaders/loader'
+import Input from '../../../components/form/input/input'
 
 class Container extends Component {
 
@@ -43,10 +44,10 @@ submitCheckoutOrder = (event)=> {
 
     render () {
         let form = ( <form>
-            <input type='text' name='name' placeholder='Input Your Name' />
-            <input type='email' name='email' placeholder='Input Your Mail' />
-            <input type='text' name='streel' placeholder='Input Your Street' />
-            <input type='text' name='postal' placeholder='Input Your Postal Code' />
+            <Input inputtype='input' type='text' name='name' placeholder='Input Your Name' />
+            <Input inputtype='input' type='email' name='email' placeholder='Input Your Mail' />
+            <Input inputtype='input' type='text' name='streel' placeholder='Input Your Street' />
+            <Input inputtype='input' type='text' name='postal' placeholder='Input Your Postal Code' />
             <Button btnType='Success' clicked={this.submitCheckoutOrder}>ORDER</Button>
         </form>);
         if(this.state.loading) {
