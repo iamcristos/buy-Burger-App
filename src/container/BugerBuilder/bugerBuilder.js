@@ -53,7 +53,7 @@ class bugerBuilder extends Component {
         const sum = Object.keys(ingredients)
             .map(item=>ingredients[item])
             .reduce((arr,curr)=> arr+curr)
-            console.log(sum)
+            // console.log(sum)
         if (sum>0) return true
         else return false
     }
@@ -104,6 +104,8 @@ class bugerBuilder extends Component {
         for (let i in this.state.ingredients) {
             quaryparams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
+        console.log(quaryparams)
+        quaryparams.push('price=' + this.state.price)
         const quaryString = quaryparams.join('&');
         console.log(quaryString)
         this.props.history.push({
