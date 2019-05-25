@@ -15,7 +15,12 @@ class Container extends Component {
                         type: 'text',
                         placeholder: 'Your Name'
                     },
-                    value: ''
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    touched: false
                 },
                 email: {
                     elementType: 'input',
@@ -23,7 +28,12 @@ class Container extends Component {
                         type: 'email',
                         placeholder: 'Your Email'
                     },
-                    value: ''
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    touched: false
                 },
                 address: {
                     elementType: 'input',
@@ -31,7 +41,12 @@ class Container extends Component {
                         type: 'text',
                         placeholder: 'Your Address'
                     },
-                    value: ''
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    touched: false
                 }, 
             delivaryMode: {
                 elementType: 'select',
@@ -42,9 +57,11 @@ class Container extends Component {
                         {value: 'slow', displayValue:'slow'}
                     ]
                 },
-                value:''
+                value:'',
+                valid: true
             },
             },
+        formIsValid: false,
         loading: false
     };
 
@@ -55,7 +72,6 @@ submitCheckoutOrder = (event)=> {
     for (let k in this.state.formData ) {
         formData[k] = this.state.formData[k].value
     }
-    // console.log(formData)
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
@@ -71,13 +87,28 @@ submitCheckoutOrder = (event)=> {
             })
     }
 
+checkValidate = (value, rules)=>{
+    let isValid = false;
+    if (rules.required) {
+        isValid = value.trim() !== ''
+    }
+    return isValid;
+}
+
 onChangeHandler = (event, inputField)=>{
     const formData = {...this.state.formData}
     const onChangeData = {...formData[inputField]}
     onChangeData.value = event.target.value;
+    onChangeData.touched = true;
+    onChangeData.valid = this.checkValidate(onChangeData.value, onChangeData.validation);
+    let formValid = true;
+    for(let k in formData) {
+        formValid=formData[k].valid && formValid
+    }
     formData[inputField] = onChangeData;
-    this.setState({formData: formData})
+    this.setState({formData: formData, formIsValid : formValid})
 }
+
 
     render () {
         let formDataArray = [];
@@ -93,9 +124,12 @@ onChangeHandler = (event, inputField)=>{
                 elementType={item.data.elementType}
                 elementConfig= {item.data.elementConfig}
                 value= {item.data.value}
+                invalid = {!item.data.valid}
+                validation = {item.data.validation}
+                touched = {item.data.touched}
                 changed= {(event)=>this.onChangeHandler(event,item.id)}/>
             ))}
-            <Button btnType='Success' >ORDER</Button>
+            <Button btnType='Success'  disabled = {!this.state.formIsValid}>ORDER</Button>
         </form>);
         if(this.state.loading) {
             form = <Spinner />
