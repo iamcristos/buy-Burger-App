@@ -12,16 +12,13 @@ class Orders extends Component {
     componentDidMount() {
         axios.get('/buy.json')
             .then(res => {
-                // console.log(res.data)
                const fetchedData = []
                 for (let k in res.data) {
-                    // console.log(k)
                     fetchedData.push({
                         ...res.data[k],
                         id: k
                     })
                 }
-                console.log(fetchedData)
                 this.setState({loading:false, ingredient:fetchedData})
             })
             .catch(err => {
@@ -30,12 +27,18 @@ class Orders extends Component {
     }
 
     render () {
+        let loadSpin = null
+        if (this.state.loading) {
+            loadSpin = <Spinner />
+        } else {
+            loadSpin = this.state.ingredient.map(item=>
+                <Order key = {item.id} ingredient = {item.ingredients}
+                price={item.price}/>
+            )
+        }
         return (
             <div>
-                 {this.state.ingredient.map(item=>
-                     <Order key = {item.id} ingredient = {item.ingredients}
-                     price={item.price}/>
-                 )}
+                 {loadSpin}
             </div>
         )
     }

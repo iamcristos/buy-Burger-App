@@ -3,51 +3,133 @@ import Button from '../../../UI/button/button';
 import classes from './containerData.css';
 import axios from '../../../axios';
 import Spinner from '../../../UI/loaders/loader'
+import Input from '../../../components/form/input/input'
 
 class Container extends Component {
 
     state = {
-        email : '',
-        name : '',
-        address : {
-            street : "",
-            postalCode: ''
-        },
+            formData: {
+                name: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'text',
+                        placeholder: 'Your Name'
+                    },
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    touched: false
+                },
+                email: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'email',
+                        placeholder: 'Your Email'
+                    },
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    touched: false
+                },
+                address: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'text',
+                        placeholder: 'Your Address'
+                    },
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    touched: false
+                }, 
+            delivaryMode: {
+                elementType: 'select',
+                elementConfig: {
+                    type: 'select',
+                    options: [
+                        {value: 'fastest', displayValue:'fastest'},
+                        {value: 'slow', displayValue:'slow'}
+                    ]
+                },
+                value:'',
+                valid: true
+            },
+            },
+        formIsValid: false,
         loading: false
     };
 
 submitCheckoutOrder = (event)=> {
     event.preventDefault();
-    this.setState({loading:true})
+    this.setState({loading:true});
+    const formData = {};
+    for (let k in this.state.formData ) {
+        formData[k] = this.state.formData[k].value
+    }
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: 'Nmeregini Vincent',
-                email: 'nmereginivincent@gmail.com',
-                address: 'Lagos Nigeria'
-            },
-            delivaryMode: 'fastest'
+            oderData : formData
         }
         axios.post('/buy.json', order)
             .then(res=> {
-                console.log(res)
                 this.setState({loading:false,})
                 this.props.history.push('/')
             })
             .catch(err=> {
                 this.setState({loading:false, })
             })
+    }
 
+checkValidate = (value, rules)=>{
+    let isValid = false;
+    if (rules.required) {
+        isValid = value.trim() !== ''
+    }
+    return isValid;
 }
 
+onChangeHandler = (event, inputField)=>{
+    const formData = {...this.state.formData}
+    const onChangeData = {...formData[inputField]}
+    onChangeData.value = event.target.value;
+    onChangeData.touched = true;
+    onChangeData.valid = this.checkValidate(onChangeData.value, onChangeData.validation);
+    let formValid = true;
+    for(let k in formData) {
+        formValid=formData[k].valid && formValid
+    }
+    formData[inputField] = onChangeData;
+    this.setState({formData: formData, formIsValid : formValid})
+}
+
+
     render () {
-        let form = ( <form>
-            <input type='text' name='name' placeholder='Input Your Name' />
-            <input type='email' name='email' placeholder='Input Your Mail' />
-            <input type='text' name='streel' placeholder='Input Your Street' />
-            <input type='text' name='postal' placeholder='Input Your Postal Code' />
-            <Button btnType='Success' clicked={this.submitCheckoutOrder}>ORDER</Button>
+        let formDataArray = [];
+        for (let k in this.state.formData) {
+            formDataArray.push({
+                id: k,
+                data: this.state.formData[k]
+            })
+        }
+        let form = ( <form onSubmit={this.submitCheckoutOrder}>
+            {formDataArray.map(item=>(
+                <Input key = {item.id}
+                elementType={item.data.elementType}
+                elementConfig= {item.data.elementConfig}
+                value= {item.data.value}
+                invalid = {!item.data.valid}
+                validation = {item.data.validation}
+                touched = {item.data.touched}
+                changed= {(event)=>this.onChangeHandler(event,item.id)}/>
+            ))}
+            <Button btnType='Success'  disabled = {!this.state.formIsValid}>ORDER</Button>
         </form>);
         if(this.state.loading) {
             form = <Spinner />
