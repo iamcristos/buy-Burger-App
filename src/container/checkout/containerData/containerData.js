@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import {connect} from 'react-redux'
 import Button from '../../../UI/button/button';
 import classes from './containerData.css';
 import axios from '../../../axios';
@@ -57,6 +58,7 @@ class Container extends Component {
                         {value: 'slow', displayValue:'slow'}
                     ]
                 },
+                validation: {},
                 value:'',
                 valid: true
             },
@@ -73,7 +75,7 @@ submitCheckoutOrder = (event)=> {
         formData[k] = this.state.formData[k].value
     }
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ingr,
             price: this.props.price,
             oderData : formData
         }
@@ -142,5 +144,11 @@ onChangeHandler = (event, inputField)=>{
         )
     }
 }
+const mapStateToProps = state =>{
+    return {
+        ingr: state.ingredients,
+        price: state.price
+    }
+}
 
-export default Container;
+export default connect(mapStateToProps)(Container);
